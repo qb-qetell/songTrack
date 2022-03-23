@@ -24,7 +24,7 @@ func (s *Track) Run () {
 	go s.inst (s.clap, s.flap)
 }
 
-func (s *Track) _CLAP_Fill (stream []string, waitDrtn uint32) (fillStatus bool) {
+func (s *Track) CLAP_Fill (stream []string, waitDrtn uint32) (fillStatus bool) {
 	if waitDrtn == 0 {
 		s.clap <- stream
 		fillStatus = true
@@ -45,7 +45,7 @@ func (s *Track) _CLAP_Fill (stream []string, waitDrtn uint32) (fillStatus bool) 
 	return
 }
 
-func (s *Track) _FLAP_Read (waitDrtn uint32) (readStatus bool, stream []string) {
+func (s *Track) FLAP_Read (waitDrtn uint32) (readStatus bool, stream []string) {
 	if waitDrtn == 0 {
 		stream = <- s.flap
 		readStatus = true
