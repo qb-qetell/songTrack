@@ -21,20 +21,16 @@ func TestPremier (t *testing.T) {
 	
 	_x5251 := t01._CLAP_Fill ([]string {"1", "2", "3"}, 2000)
 	fmt.Println (_x5251)
-	_x5261 := t01._CLAP_Fill ([]string {"7", "8", "9"}, 2000)
+	_x5261 := t01._CLAP_Fill ([]string {"7", "8", "9"}, 0)
 	fmt.Println (_x5261)
 	
-	
-	_x5281, _x5291 := t01._FLAP_Read (0)
-	fmt.Println (_x5281)
-	fmt.Println (_x5291)
-   	_x5295, _x5300 := t01._FLAP_Read (2000)
+   	_x5295, _x5300 := t01._FLAP_Read (1)
    	fmt.Println (_x5295)
    	fmt.Printf ("Message from FT: \n%s\n%s\n%s\n", _x5300 [0], _x5300 [1], _x5300 [2])
-   	_x5395, _x5400 := t01._FLAP_Read (2000)
+   	_x5395, _x5400 := t01._FLAP_Read (0)
    	fmt.Println (_x5395)
    	fmt.Printf ("Message from FT: \n%s\n%s\n%s\n", _x5400 [0], _x5400 [1], _x5400 [2])
 	
-	_x5600 := t01._CLAP_Fill ([]string {"7", "8", "9"}, 2000)
+	_x5600 := t01._CLAP_Fill ([]string {"7", "8", "9"}, 0)
 	fmt.Println (_x5600)
 }

@@ -25,6 +25,12 @@ func (s *Track) Run () {
 }
 
 func (s *Track) _CLAP_Fill (stream []string, waitDrtn uint32) (fillStatus bool) {
+	if waitDrtn == 0 {
+		s.clap <- stream
+		fillStatus = true
+		return
+	}
+	
 	chnl := make (chan bool)
 	go func () {
 		drtn := fmt.Sprintf ("%dms", waitDrtn)
@@ -40,6 +46,12 @@ func (s *Track) _CLAP_Fill (stream []string, waitDrtn uint32) (fillStatus bool) 
 }
 
 func (s *Track) _FLAP_Read (waitDrtn uint32) (readStatus bool, stream []string) {
+	if waitDrtn == 0 {
+		stream = <- s.flap
+		readStatus = true
+		return
+	}
+	
 	chnl := make (chan bool)
 	go func () {
 		drtn := fmt.Sprintf ("%dms", waitDrtn)
