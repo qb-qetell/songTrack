@@ -1,12 +1,17 @@
 //-- p --
 package songTrack
-
-//-- i --
+import (
+	"time"
+	"fmt")
 type Track struct {
 	inst func (clap <-chan []string, flap chan<- []string)
 	clap chan []string
 	flap chan []string
 }
+
+//-- r --
+
+//-- i --
 func Track_Create (instrc func (clap <-chan []string, flap chan<- []string)) (*Track) {
 	return &Track {
 		inst: instrc,
@@ -14,16 +19,37 @@ func Track_Create (instrc func (clap <-chan []string, flap chan<- []string)) (*T
 		flap: make (chan []string),
 	}
 }
+
 func (s *Track) Run () {
 	go s.inst (s.clap, s.flap)
 }
-func (s *Track) _CLAP_Fill (stream []string) () {
-	s.clap <- stream
-}
-func (s *Track) _FLAP_Read () (stream []string) {
+
+func (s *Track) _CLAP_Fill (stream []string, waitDrtn uint32) (fillStatus bool) {
+	chnl := make (chan bool)
+	go func () {
+		drtn := fmt.Sprintf ("%dms", waitDrtn)
+		drtm, _ := time.ParseDuration (drtn)
+		time.Sleep (drtm)
+		chnl <- true
+	} ()
 	select {
-		case stream = <- s.flap: {}
-		default: {}
+		case s.clap <- stream: {fillStatus = true}
+		case _ = <- chnl: {fillStatus = false}
+	}
+	return
+}
+
+func (s *Track) _FLAP_Read (waitDrtn uint32) (readStatus bool, stream []string) {
+	chnl := make (chan bool)
+	go func () {
+		drtn := fmt.Sprintf ("%dms", waitDrtn)
+		drtm, _ := time.ParseDuration (drtn)
+		time.Sleep (drtm)
+		chnl <- true
+	} ()
+	select {
+		case stream = <- s.flap: {readStatus = true}
+		case _ = <- chnl: {readStatus = false}
 	}
 	return
 }
